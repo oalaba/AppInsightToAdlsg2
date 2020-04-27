@@ -14,7 +14,7 @@ namespace AppIntToAdlsg2
         {
             string accountName = "darastores1";
 
-            string accountKey = "jFY1bXnyPz6IaOUHzKIQi0FdAUtl8Z0Zc1f++GDpz11AOMUMMzdWoBvYlRcadgzTwMqcK3rudsYf5nex0ZOQ+w==";
+            string accountKey = "";
 
             string storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=" + accountName + ";AccountKey=" + accountKey;
             CloudStorageAccount account = CloudStorageAccount.Parse(storageConnectionString);
