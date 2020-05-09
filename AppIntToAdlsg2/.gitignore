@@ -1,3 +1,4 @@
 # Remove obj and bin file
 obj/
 bin/
+.env
