@@ -5,23 +5,44 @@ using System.Diagnostics;
 using Microsoft.Azure.Storage;
 using Microsoft.Azure.Storage.Blob;
 using Microsoft.Azure.Storage.DataMovement;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.Azure.KeyVault;
+using Microsoft.Azure.KeyVault.Models;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
 namespace AppIntToAdlsg2
 {
     public class Program
     {
-        public static void Main()
-        {
-            string accountName = "darastores1";
+        const string CLIENTSECRET = "14e57ff6-b0e1-4249-a43a-13f58f925552";
+        const string CLIENTID = "53a7858f-d594-41ee-bf53-7a634842fa24";
+        const string BASESECRETURI = "https://npe-kv.vault.azure.net/"; // available from the Key Vault resource page
 
-            string accountKey = "";
+        static KeyVaultClient kvc = null;
+
+        public static void Main(string[] args)
+        {
+            
+            //UploadAppInsightsDataToADLSG2();
+
+            //GetKeyVaultSecrets();
+        }
+
+        static void UploadAppInsightsDataToADLSG2(){
+
+            string accountName = "dara0dev0adlsg2";
+
+            string accountKey = "q5Hf/ROpDKS5jc3CGLGkWAgSRlkkz/2x0H+zQweY7iHp9An9iSgB3HaATh/argVX/jG4ZoFXg2H706/5MH40NQ==";
 
             string storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=" + accountName + ";AccountKey=" + accountKey;
             CloudStorageAccount account = CloudStorageAccount.Parse(storageConnectionString);
 
             ExecuteChoice(account);
         }
-
         public static void ExecuteChoice(CloudStorageAccount account)
         {
             int choice = 1;
@@ -246,7 +267,7 @@ namespace AppIntToAdlsg2
         public static string GetSourcePath()
         {
             //Console.WriteLine("asset/source.txt");
-            string sourcePath = "assets/mydata/source.txt";
+            string sourcePath = "/Users/oluwadaraalaba/Documents/EngineeringData/Border_Crossing_Entry_Data.csv";
 
             return sourcePath;
         }
@@ -254,7 +275,7 @@ namespace AppIntToAdlsg2
         public static string GetDirSourcePath()
         {
             //Console.WriteLine("asset/source.txt");
-            string sourcePath = "assets/";
+            string sourcePath = "/Users/oluwadaraalaba/Documents/EngineeringData/*";
 
             return sourcePath;
         }
@@ -264,12 +285,12 @@ namespace AppIntToAdlsg2
             CloudBlobClient blobClient = account.CreateCloudBlobClient();
 
             //Console.WriteLine("abike");
-            string containerName = "myblob2";
+            string containerName = "data1";
             CloudBlobContainer container = blobClient.GetContainerReference(containerName);
             container.CreateIfNotExistsAsync().Wait();
 
             //Console.WriteLine("document.txt");
-            string blobName = "document.txt";
+            string blobName = "border_data.csv";
             CloudBlockBlob blob = container.GetBlockBlobReference(blobName);
 
             return blob;
